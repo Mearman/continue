@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { defaultBorderRadius } from ".";
 import Loader from "./Loader";
+import YouTube from "react-youtube";
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -26,33 +27,20 @@ const StyledSpan = styled.span`
 `;
 
 const Onboarding = () => {
-  const [counter, setCounter] = useState(4);
-  const gifs = ["intro", "highlight", "question", "help"];
-  const topMessages = [
-    "Welcome!",
-    "Highlight code",
-    "Ask a question",
-    "Use /help to learn more",
-  ];
+  const [onboarded, setOnboarded] = useState(1);
 
   useEffect(() => {
     const hasVisited = localStorage.getItem("hasVisited");
     if (hasVisited) {
-      setCounter(4);
+      setOnboarded(1);
     } else {
-      setCounter(0);
+      setOnboarded(0);
       localStorage.setItem("hasVisited", "true");
     }
   }, []);
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-  }, [counter]);
-
   return (
-    <StyledDiv hidden={counter >= 4}>
+    <StyledDiv hidden={onboarded >= 1}>
       <div
         style={{
           display: "grid",
@@ -64,37 +52,9 @@ const Onboarding = () => {
           paddingRight: "16px",
         }}
       >
-        <h1>{topMessages[counter]}</h1>
+        <h1>Welcome to Continue</h1>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {loading && (
-            <div style={{ margin: "auto", position: "absolute", zIndex: 0 }}>
-              <Loader />
-            </div>
-          )}
-          {counter < 4 &&
-            (counter % 2 === 0 ? (
-              <img
-                src={`https://github.com/continuedev/continue/blob/main/media/${gifs[counter]}.gif?raw=true`}
-                width="100%"
-                key={"even-gif"}
-                alt={topMessages[counter]}
-                onLoad={() => {
-                  setLoading(false);
-                }}
-                style={{ zIndex: 1 }}
-              />
-            ) : (
-              <img
-                src={`https://github.com/continuedev/continue/blob/main/media/${gifs[counter]}.gif?raw=true`}
-                width="100%"
-                key={"odd-gif"}
-                alt={topMessages[counter]}
-                onLoad={() => {
-                  setLoading(false);
-                }}
-                style={{ zIndex: 1 }}
-              />
-            ))}
+          {<YouTube videoId={"3Ocrc-WX4iQ"} />}
         </div>
         <p
           style={{
@@ -106,20 +66,42 @@ const Onboarding = () => {
             whiteSpace: "nowrap",
           }}
         >
-          <StyledSpan
-            hidden={counter === 0}
-            onClick={() => setCounter((prev) => Math.max(prev - 1, 0))}
-          >
-            <ArrowLeftIcon width="18px" strokeWidth="2px" /> Previous
+          <StyledSpan>
+            <a 
+              href="https://continue.dev/docs"
+              className="no-underline"
+            >Read more on the Continue Docs</a>
           </StyledSpan>
-          <span hidden={counter === 0}>{" | "}</span>
-          <StyledSpan onClick={() => setCounter((prev) => prev + 1)}>
-            {counter === 0
-              ? "Click to learn how to use Continue"
-              : counter === 3
-              ? "Get Started"
-              : "Next"}{" "}
-            <ArrowRightIcon width="18px" strokeWidth="2px" />
+        </p>
+        <p
+          style={{
+            paddingLeft: "50px",
+            paddingRight: "50px",
+            paddingBottom: "50px",
+            textAlign: "center",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <StyledSpan>
+            <a 
+              href="https://discord.gg/vapESyrFmJ"
+              className="no-underline"
+            >Ask questions on the Discord</a>
+          </StyledSpan>
+        </p>
+        <p
+          style={{
+            paddingLeft: "50px",
+            paddingRight: "50px",
+            paddingBottom: "50px",
+            textAlign: "center",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <StyledSpan>
+            Click here to get started
           </StyledSpan>
         </p>
       </div>
